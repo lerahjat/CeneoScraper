@@ -12,9 +12,26 @@ if response.status_code == requests.codes.ok:
         all_opinions = []
         print(f"There are some opinions about product with {product_code}code.")
         for opinion in opinions:
+            opinion_id = opinion["data-entry-id"]
+            author = opinion.select_one("span.user-post__author-name").text.strip()
             single_opinion = {
+                "opinion_id": opinion_id,
+                "author": author,
+                "authors recommendation": recommendation,
+                "score" : score,
+                "description" : description,
+                "pros": pros,
+                "cons":cons,
+                "like": like,
+                "dislike": dislike,
+                "publish_date": publish_date,
+                "purchase_date": purchase_date
 
             }
+            all_opinions.append(single_opinion)
+        url = "https://ceneo.pl" + page_dom.select_one("a.pagination_next")["href"]
+        print(url)
     else:    
          print(f"There are no opinions about product with {product_code}code.")
-print(response.status_code)
+open(f"./opinions/{product_code}.json", "w", encodimg="UTF-8") as jf:
+json.dump(all_opinions.jf, imdent=4,ensure_ascii=False)
