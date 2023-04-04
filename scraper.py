@@ -1,9 +1,17 @@
 import requests
+import json
 import bs4 as BeautifulSoup
-#product_code = input("Please enter product code")
-product_code = "129901214"
+
+def get_something(dom_tree, selector,attribute = None):
+    try:
+        if attribute:
+            return dom_tree.select_one(selector)[attribute].strip()
+    return dom_tree.select_one(selector).text.strip()
+
+product_code = input("Please enter product code")
 
 url= f"https://www.ceneo.pl/{product_code}#tab=reviews"
+
 response = requests.get(url)
 if response.status_code == requests.codes.ok:
     page_dom = BeautifulSoup(response.text, "html.parser")
@@ -33,5 +41,5 @@ if response.status_code == requests.codes.ok:
         print(url)
     else:    
          print(f"There are no opinions about product with {product_code}code.")
-open(f"./opinions/{product_code}.json", "w", encodimg="UTF-8") as jf:
-json.dump(all_opinions.jf, imdent=4,ensure_ascii=False)
+with open(f"./opinions/{product_code}.json", "w", encodimg="UTF-8") as jf:
+    json.dump(all_opinions.jf, imdent=4,ensure_ascii=False)
